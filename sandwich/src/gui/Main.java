@@ -7,7 +7,6 @@ public class Main {
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-
                 OrderForm of = new OrderForm();
                 of.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 of.setVisible(true);
