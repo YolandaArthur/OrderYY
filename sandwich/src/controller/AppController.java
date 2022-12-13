@@ -1,0 +1,36 @@
+package controller;
+
+import exception.OrderAlreadyExistsException;
+import model.Order;
+import model.Person;
+import repository.FileOrderRepository;
+import repository.MemoryCategoryRepository;
+
+import java.io.IOException;
+
+public class AppController {
+
+    private static AppController instance;
+
+    private static FileOrderRepository orderRepo;
+
+    private AppController() throws IOException {
+        orderRepo = FileOrderRepository.getInstance();
+    }
+
+    public static AppController getInstance() throws IOException {
+        if (instance==null) instance=new AppController();
+        return instance;
+    }
+
+    public void AddToOrderAction(Order o) {
+        try {
+            orderRepo.addOrder(o);
+        } catch (IOException | OrderAlreadyExistsException e) {
+            System.out.println(e.getMessage());
+            //order.fillErrorLabel(e.getMessage());
+            //exceptionLogger.error(e.getMessage());
+        }
+    }
+
+}
