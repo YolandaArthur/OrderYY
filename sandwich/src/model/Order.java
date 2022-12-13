@@ -1,7 +1,11 @@
 package model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.time.LocalDate;
-import lombok.*;
 
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class Order {
@@ -17,5 +21,7 @@ public class Order {
     public boolean validate(){
         return true;
     }
+
+
 
 }
