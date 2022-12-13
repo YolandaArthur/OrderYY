@@ -36,8 +36,8 @@ public class FileOrderRepository implements OrderRepository{
             String[] vals = line.split(";");
             if (!vals[0].equals("")) {
 
-                Order o = null;
-                Sandwich s =  null;
+                Order o =new Order();
+                Sandwich s = new Sandwich();
                 String sandName =  vals[0];
                 if(! sandName.equals(null) ) {
                     s.setSandwichName(sandName );
