@@ -1,8 +1,8 @@
 package model;
 
 import java.time.LocalDate;
-
 public class Order {
+
     private Sandwich sandwich;
     private LocalDate date;
     private String personName;
