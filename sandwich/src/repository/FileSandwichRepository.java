@@ -36,7 +36,7 @@ public class FileSandwichRepository {
                 String sandName =  vals[0];
                 if(! sandName.equals(null) ) {
                     Sandwich s =  null;
-                    s.setSandwichName(sandName );
+                    //s.setSandwichName(sandName );
                 }
             }
         }
