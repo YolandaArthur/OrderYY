@@ -2,9 +2,7 @@ package controller;
 
 import exception.OrderAlreadyExistsException;
 import model.Order;
-import model.Person;
 import repository.FileOrderRepository;
-import repository.MemoryCategoryRepository;
 
 import java.io.IOException;
 
@@ -19,7 +17,7 @@ public class AppController {
     }
 
     public static AppController getInstance() throws IOException {
-        if (instance==null) instance=new AppController();
+        if (instance == null) instance = new AppController();
         return instance;
     }
 
@@ -32,5 +30,5 @@ public class AppController {
             //exceptionLogger.error(e.getMessage());
         }
     }
-
 }
+
