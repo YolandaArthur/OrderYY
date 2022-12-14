@@ -1,6 +1,7 @@
 package controller;
 
 import exception.OrderAlreadyExistsException;
+import gui.OrderForm;
 import model.Order;
 import repository.FileOrderRepository;
 
@@ -26,7 +27,9 @@ public class AppController {
             orderRepo.addOrder(o);
         } catch (IOException | OrderAlreadyExistsException e) {
             System.out.println(e.getMessage());
-            //order.fillErrorLabel(e.getMessage());
+            //OrderForm.fillErrorLabel(e.getMessage());
+
+
             //exceptionLogger.error(e.getMessage());
         }
     }

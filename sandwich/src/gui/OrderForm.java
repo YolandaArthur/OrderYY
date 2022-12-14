@@ -30,7 +30,7 @@ public class OrderForm extends JFrame {
     private JComboBox breadTypeComboBox;
     private JLabel courseLabel;
     private JTextField courseTextField;
-    private JLabel erroLabel;
+    private JLabel errorLabel;
 
     private void initialize() {
         this.setSize(600, 300);
@@ -56,7 +56,9 @@ public class OrderForm extends JFrame {
         }
         breadTypeComboBox.addItem("Gris");
         breadTypeComboBox.addItem("Blanc");
-
+        veganComboBox.addItem("Crudités");
+        veganComboBox.addItem("légumes grillés");
+        veganComboBox.addItem("Sans Légumes");
 
     }
 
@@ -67,28 +69,32 @@ public class OrderForm extends JFrame {
         String sandwichName = sandwichComboBox.getSelectedItem().toString();
         String breadType = breadTypeComboBox.getSelectedItem().toString();
         String personName = personNameTextField.getText();
-        String comment = commentTextField.getText();
+        String commentString = commentTextField.getText();
         String courseName = courseTextField.getText();
+        boolean withRawVegetables = Boolean.parseBoolean(rawVegetablesCheckBox.getText());
+        String veganOptions = veganComboBox.getSelectedItem().toString();
 
         if (personName.isEmpty()){
-            erroLabel.setText("Name is required.");
+            errorLabel.setText("Name is required.");
             allOk=false;
         } else if (courseName.isEmpty()){
-            erroLabel.setText("Course name is required.");
+            errorLabel.setText("Course name is required.");
             allOk=false;
         } else {
-            erroLabel.setText("");
+            errorLabel.setText("");
             allOk=true;
         }
 
         if (allOk){
-            Sandwich s = null;
-            LocalDate ld = null;
-            Order o = new Order(s,ld,personName,courseName,breadType,false,"test","no comment");
+            Sandwich s = new Sandwich();
+            s.setSandwichName(sandwichName);
+            LocalDate ld = DateUtils.parse("13/12/2022");
+            Order o = new Order(s,ld,personName,courseName,breadType,withRawVegetables,veganOptions,commentString);
             controller.AddToOrderAction(o);
         }
 
     }
+
 
 
 
@@ -119,5 +125,10 @@ public class OrderForm extends JFrame {
         });
 
 
+
+    }
+
+    public void fillErrorLabel(String message) {
+        errorLabel.setText(message);
     }
 }
