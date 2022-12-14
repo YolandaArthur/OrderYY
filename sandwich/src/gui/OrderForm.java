@@ -62,31 +62,6 @@ public class OrderForm extends JFrame {
 
     private void initializeComboBox() {
 
-        /*FileSandwichRepository sr = null;
-        try {
-            sr = FileSandwichRepository.getInstance();
-            sr.readFileSandwich();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        List<Sandwich> sandwichList1 = null;
-        try {
-            sandwichList1 = FileSandwichRepository.getInstance().getAllSandwiches();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }*/
-
-        //for (Sandwich s : sandwichList1) { System.out.println(s.getSandwichName());}
-
-       /*String[] allCat = { "Viande", "Poulet", "Poisson","Végétarien","Végan","Spécialités" };
-        for (String i : allCat) {
-            categoryComboBox.addItem(i);
-        }*/
-        /*String[] viandeSandW = {"Filet américain","Boulette","Pastrami"};
-        String[] pouletSandw = {"Blance de Poulet","Poulet au curry piquant"};
-        String[] poissonSandw = {"Salade de thon","Salade de thon piquant"};
-        String[] vegetSandw = {"Fromage","Tomate mozarella pesto"};
-        String[] veganSandw = {"Spread de carotte + sésam + cressonnette","Houmous"};*/
         Set<String> uniqueCategoryList = new HashSet<String>();
         for(Sandwich i : this.sandwichList1){
             //sandwichComboBox.addItem(i.getSandwichName());
@@ -101,24 +76,43 @@ public class OrderForm extends JFrame {
        String currentCategory;
 
        currentCategory = categoryComboBox.getSelectedItem().toString();
-       int idxSandwich=0;
+
+
        for (Sandwich j : sandwichList1){
                 if (j.getCategory().equals(currentCategory)){
-                    sandwichComboBox.addItem(j.getSandwichName());
-
+                    sandwichComboBox.addItem(j);
+                    sandwichDesc.setForeground(Color.BLUE);
+                    sandwichDesc.setText(j.getDescription());
                 }
-             if (idxSandwich == 0){sandwichDesc.setText(j.getDescription());}
-             idxSandwich ++;
         }
 
-        String currentSandwich;
-        currentSandwich = sandwichComboBox.toString();
+        sandwichDesc.setText(((Sandwich) sandwichComboBox.getSelectedItem()).getDescription());
+
 
         breadTypeComboBox.addItem("Gris");
         breadTypeComboBox.addItem("Blanc");
-        veganComboBox.addItem("Crudités");
-        veganComboBox.addItem("légumes grillés");
-        veganComboBox.addItem("Sans Légumes");
+
+        if (currentCategory.equals("Végan")){
+            rawVegetablesCheckBox.setEnabled(false);
+            rawVegetablesCheckBox.setSelected(false);
+            veganComboBox.addItem("Crudités");
+            veganComboBox.addItem("légumes grillés");
+            veganComboBox.addItem("Sans Légumes");
+            veganComboBox.setEnabled(true);
+        } else if (currentCategory.equals("Spécialités")) {
+            rawVegetablesCheckBox.setEnabled(false);
+            rawVegetablesCheckBox.setSelected(false);
+
+            veganComboBox.setEnabled(false);
+        } else {
+            rawVegetablesCheckBox.setEnabled(true);
+            veganComboBox.removeAllItems();
+            veganComboBox.setEnabled(false);
+        }
+
+
+
+
 
     }
 
@@ -131,6 +125,7 @@ public class OrderForm extends JFrame {
         LocalDateTime now = LocalDateTime.now();
         int hrS = Integer.parseInt(dtf.format(now));
         if (hrS > 9) {
+            errorLabel.setForeground(Color.RED);
             errorLabel.setText("it's too late. Please come back tomorrow");
             allOk = false;
         } else {
@@ -140,12 +135,20 @@ public class OrderForm extends JFrame {
             String commentString = commentTextField.getText();
             String courseName = courseTextField.getText();
             boolean withRawVegetables = Boolean.parseBoolean(rawVegetablesCheckBox.getText());
-            String veganOptions = veganComboBox.getSelectedItem().toString();
+            String veganOptions;
+            if (veganComboBox.getSelectedItem()==null) {
+                veganOptions = "null";
+            }
+            else {
+                veganOptions = veganComboBox.getSelectedItem().toString();
+            }
 
             if (personName.isEmpty()) {
+                errorLabel.setForeground(Color.RED);
                 errorLabel.setText("Name is required.");
                 allOk = false;
             } else if (courseName.isEmpty()) {
+                errorLabel.setForeground(Color.RED);
                 errorLabel.setText("Course name is required.");
                 allOk = false;
             } else {
@@ -194,15 +197,14 @@ public class OrderForm extends JFrame {
         addButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("going to add item to order list");
+                //System.out.println("going to add item to order list");
                 onAdd();
             }
         });
         sendButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("sending order");
-
+                System.exit(0);
             }
         });
 
@@ -210,7 +212,7 @@ public class OrderForm extends JFrame {
         categoryComboBox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent e) {
-                System.out.println("got to change sandwich combobox");
+                //System.out.println("got to change sandwich combobox");
 
                 sandwichComboBox.removeAllItems();
                 String currentCategory;
@@ -218,9 +220,39 @@ public class OrderForm extends JFrame {
 
                 for (Sandwich j : sandwichList1){
                     if (j.getCategory().equals(currentCategory)){
-                        sandwichComboBox.addItem(j.getSandwichName());
+                        sandwichComboBox.addItem(j);
                     }
                 }
+                sandwichDesc.setForeground(Color.BLUE);
+                sandwichDesc.setText(((Sandwich) sandwichComboBox.getSelectedItem()).getDescription());
+                if (currentCategory.equals("Végan")){
+                    rawVegetablesCheckBox.setEnabled(false);
+                    rawVegetablesCheckBox.setSelected(false);
+                    veganComboBox.addItem("Crudités");
+                    veganComboBox.addItem("légumes grillés");
+                    veganComboBox.addItem("Sans Légumes");
+                    veganComboBox.setEnabled(true);
+                } else if (currentCategory.equals("Spécialités")) {
+                    rawVegetablesCheckBox.setEnabled(false);
+                    rawVegetablesCheckBox.setSelected(false);
+
+                    veganComboBox.setEnabled(false);
+                } else {
+                    rawVegetablesCheckBox.setEnabled(true);
+                    veganComboBox.removeAllItems();
+                    veganComboBox.setEnabled(false);
+                }
+            }
+        });
+        sandwichComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+            if (sandwichComboBox.getSelectedItem()==null) {
+            } else {
+                sandwichDesc.setForeground(Color.BLUE);
+                sandwichDesc.setText(((Sandwich) sandwichComboBox.getSelectedItem()).getDescription());
+            }
+
             }
         });
     }

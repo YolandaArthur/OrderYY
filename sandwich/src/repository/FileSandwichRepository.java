@@ -38,7 +38,7 @@ public class FileSandwichRepository implements SandwichRepository{
 
                 Sandwich s = new Sandwich();
                 String sandName =  vals[0];
-                System.out.println(sandName);
+                //System.out.println(sandName);
                 if(! sandName.equals(null) ) {
                     s.setSandwichName(sandName );
                     s.setDescription(vals[1]);
