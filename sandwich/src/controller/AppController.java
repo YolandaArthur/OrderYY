@@ -36,4 +36,16 @@ public class AppController {
             //exceptionLogger.error(e.getMessage());
         }
     }
+
+    public List<Sandwich> GetSandwichCatalog(OrderForm of){
+        try {
+            sandwichRepo.readFileSandwich();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            of.fillErrorLabel(e.getMessage());
+        }
+
+        return sandwichRepo.getAllSandwiches();
+
+    }
 }
