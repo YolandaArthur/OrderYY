@@ -1,8 +1,9 @@
 package repository;
 
-import exception.OrderAlreadyExistsException;
 import exception.OrderNotFoundException;
+import exception.TooManyOrdersException;
 import model.Order;
+import model.Person;
 import model.Sandwich;
 import utils.DateUtils;
 
@@ -11,14 +12,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class FileOrderRepository implements OrderRepository{
 
     private static FileOrderRepository instance;
 
-    private List<Order> allOrders = new ArrayList<Order>();
+    private static List<Order> allOrders = new ArrayList<Order>();
 
     private static final String FILELOCATION = "/temp/javacourses/Orders.csv";
 
@@ -50,14 +51,13 @@ public class FileOrderRepository implements OrderRepository{
                 o.setCourse(!vals[5].equals("null") ? vals[5] : null);
                 o.setTypeBread(!vals[6].equals("null") ? vals[6] : null);
                 o.setWithRawVegetables(vals[7].equals("null"));
-                o.setCourse(!vals[8].equals("null") ? vals[8] : null);
+                o.setVeganOptions(!vals[8].equals("null") ? vals[8] : null);
                 o.setComment(!vals[9].equals("null") ? vals[9] : null);
 
                 allOrders.add(o);
             }
         }
     }
-
     private String convertOrderToString(Order o) {
         Sandwich s = o.getSandwich();
         StringBuilder sb = new StringBuilder();
@@ -65,19 +65,19 @@ public class FileOrderRepository implements OrderRepository{
                 .append(s.getCategory()).append(";")
                 .append(s.getDescription()).append(";")
                 .append(DateUtils.format(o.getDate())).append(";")
-                .append(o.getPersonName()).append(";")
-                .append(o.getCourse()).append(";")
-                .append(o.getTypeBread()).append(";")
-                .append(o.getWithRawVegetables()).append(";")
-                .append(o.getVeganOptions()).append(";")
-                .append(o.getComment())
-;
+                .append((o.getPersonName()!=null ?o.getPersonName():"null")).append(";")
+                .append((o.getCourse()!=null ? o.getCourse():"null")).append(";")
+                .append((o.getTypeBread()!=null ?o.getTypeBread():"null")).append(";")
+                .append((o.getWithRawVegetables()?true:false)).append(";")
+                .append((o.getVeganOptions()!=null?"null":o.getVeganOptions())).append(";")
+                .append((o.getComment()!=null?"null":o.getComment())).append(";");
+
         return sb.toString();
     }
 
     @Override
     public List<Order> getAllOrders() {
-        return null;
+        return this.allOrders;
     }
 
     @Override
@@ -86,17 +86,31 @@ public class FileOrderRepository implements OrderRepository{
     }
 
     @Override
-    public void addOrder(Order o) throws OrderAlreadyExistsException, IOException {
-
-        if (allOrders.contains(o)) {
-            String message =  " was already registered.";
-            throw new OrderAlreadyExistsException(message);
-        }
-
+    public void addOrder(Order o) throws TooManyOrdersException, IOException {
+        long i =  allOrders.stream().filter(a -> a.getPersonName().equals(o.getPersonName())  && a.getCourse().equals(o.getCourse()))
+                .count();
+        if (i>1) throw new TooManyOrdersException("only 2 orders allowed by person");
         PrintWriter pw = new PrintWriter(new FileWriter(FILELOCATION, true));
         String s = this.convertOrderToString (o);
         pw.append("\n" + s);
         pw.close();
         allOrders.add(o);
     }
+    public String formatGlobalOrder(){
+        Map<String, List<Order>> orderPerCourse = allOrders.stream().
+                collect(Collectors.groupingBy(o -> o.getCourse()));
+
+        System.out.println(orderPerCourse + "\n");
+        for (String cName : orderPerCourse.keySet()) {
+            System.out.println(cName + ": ");
+            for (Order o : orderPerCourse.get(cName)) {
+                System.out.println(o);
+            }
+            System.out.println("");
+        }
+
+        return null;
+    }
+
+
 }

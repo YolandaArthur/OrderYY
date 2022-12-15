@@ -1,6 +1,6 @@
 package repository;
 
-import exception.OrderAlreadyExistsException;
+import exception.TooManyOrdersException;
 import exception.OrderNotFoundException;
 import model.Order;
 
@@ -12,6 +12,6 @@ public interface OrderRepository {
     List<Order> getAllOrders();
 
     Order findOrder(String email, String password) throws OrderNotFoundException;
-    void addOrder(Order o) throws IOException, OrderAlreadyExistsException;
+    void addOrder(Order o) throws IOException, TooManyOrdersException;
 
 }

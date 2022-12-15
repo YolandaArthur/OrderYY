@@ -7,7 +7,6 @@ import java.time.LocalDate;
 @NoArgsConstructor @AllArgsConstructor @Getter @Setter
 public class Order {
     private Sandwich sandwich;
-    @EqualsAndHashCode.Include
     private LocalDate date;
     @EqualsAndHashCode.Include
     private String personName;
@@ -22,7 +21,12 @@ public class Order {
         return true;
     }
 
-
-
+    @Override
+    public String toString(){
+        String or ;
+        or =  this.personName + " " +  this.getSandwich().getCategory() + " ";
+        or = or + " " + this.getSandwich().getDescription();
+        return or;
+    }
 
 }

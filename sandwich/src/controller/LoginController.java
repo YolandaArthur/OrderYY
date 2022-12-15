@@ -1,14 +1,9 @@
 package controller;
 
-import exception.OrderAlreadyExistsException;
 import exception.PersonNotFoundException;
 import gui.Login;
-import model.Order;
 import model.Person;
-import repository.FileOrderRepository;
 import repository.FilePersonRepository;
-
-import java.io.IOException;
 
 public class LoginController {
 

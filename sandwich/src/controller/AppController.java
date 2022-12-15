@@ -1,15 +1,12 @@
 package controller;
 
-import exception.OrderAlreadyExistsException;
+import exception.TooManyOrdersException;
 import gui.OrderForm;
 import model.Order;
-import model.Sandwich;
 import repository.FileOrderRepository;
 import repository.FileSandwichRepository;
-import repository.SandwichRepository;
 
 import java.io.IOException;
-import java.util.List;
 
 public class AppController {
 
@@ -31,7 +28,7 @@ public class AppController {
     public void AddToOrderAction(OrderForm of, Order o) {
         try {
             orderRepo.addOrder(o);
-        } catch (IOException | OrderAlreadyExistsException e) {
+        } catch (IOException | TooManyOrdersException e) {
             System.out.println(e.getMessage());
             of.fillErrorLabel(e.getMessage());
 
