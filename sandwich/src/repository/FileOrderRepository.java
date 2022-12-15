@@ -61,6 +61,12 @@ public class FileOrderRepository implements OrderRepository{
     private String convertOrderToString(Order o) {
         Sandwich s = o.getSandwich();
         StringBuilder sb = new StringBuilder();
+
+        System.out.println("desc :" + s.getDescription());
+        System.out.println("cat :" + s.getCategory());
+        System.out.println("name :" + s.getSandwichName());
+
+
         sb.append(s.getSandwichName()).append(";")
                 .append(s.getCategory()).append(";")
                 .append(s.getDescription()).append(";")
@@ -69,8 +75,8 @@ public class FileOrderRepository implements OrderRepository{
                 .append((o.getCourse()!=null ? o.getCourse():"null")).append(";")
                 .append((o.getTypeBread()!=null ?o.getTypeBread():"null")).append(";")
                 .append((o.getWithRawVegetables()?true:false)).append(";")
-                .append((o.getVeganOptions()!=null?"null":o.getVeganOptions())).append(";")
-                .append((o.getComment()!=null?"null":o.getComment())).append(";");
+                .append((o.getVeganOptions()==null?"null":o.getVeganOptions())).append(";")
+                .append((o.getComment()==null?"null":o.getComment())).append(";");
 
         return sb.toString();
     }

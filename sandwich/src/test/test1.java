@@ -11,7 +11,6 @@ import java.util.List;
 
 public class test1 {
     public static void main(String[] args) throws TooManyOrdersException, IOException {
-
         FileOrderRepository or = FileOrderRepository.getInstance();
         or.readFile();
         List<Order> test0 = or.getAllOrders();

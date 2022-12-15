@@ -88,7 +88,6 @@ public class OrderForm extends JFrame {
 
         sandwichDesc.setText(((Sandwich) sandwichComboBox.getSelectedItem()).getDescription());
 
-
         breadTypeComboBox.addItem("Gris");
         breadTypeComboBox.addItem("Blanc");
 
@@ -118,18 +117,22 @@ public class OrderForm extends JFrame {
 
 
     private void onAdd() {
-
+        System.out.println("adding");
         boolean allOk = true;
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH");
         LocalDateTime now = LocalDateTime.now();
         int hrS = Integer.parseInt(dtf.format(now));
-        if (hrS > 9) {
+        System.out.println(hrS);
+        if (hrS > 16) {
+            System.out.println("if");
             errorLabel.setForeground(Color.RED);
             errorLabel.setText("it's too late. Please come back tomorrow");
             allOk = false;
         } else {
+            System.out.println("else");
             String sandwichName = sandwichComboBox.getSelectedItem().toString();
+            String sandwichDesc = sandwichLabel.getText();
             String breadType = breadTypeComboBox.getSelectedItem().toString();
             String personName = personNameTextField.getText();
             String commentString = commentTextField.getText();
@@ -159,6 +162,8 @@ public class OrderForm extends JFrame {
             if (allOk) {
                     Sandwich s = new Sandwich();
                     s.setSandwichName(sandwichName);
+                    s.setCategory(categoryComboBox.getSelectedItem().toString());
+                    s.setDescription(sandwichDesc);
                     LocalDate ld = DateUtils.parse("13/12/2022");
                     Order o = new Order(s, ld, personName, courseName, breadType, withRawVegetables, veganOptions, commentString);
                     controller.AddToOrderAction(OrderForm.this, o);
