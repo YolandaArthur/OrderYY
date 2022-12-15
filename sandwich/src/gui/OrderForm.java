@@ -171,7 +171,7 @@ public class OrderForm extends JFrame {
     public OrderForm() throws HeadlessException {
         super();
 
-        FileSandwichRepository sr = null;
+        /*FileSandwichRepository sr = null;
         try {
             sr = FileSandwichRepository.getInstance();
             sr.readFileSandwich();
@@ -183,16 +183,18 @@ public class OrderForm extends JFrame {
             sandwichList1 = FileSandwichRepository.getInstance().getAllSandwiches();
         } catch (IOException e) {
             throw new RuntimeException(e);
-        }
+        }*/
 
-        initialize();
-        initializeComboBox();
+
         try {
             controller= AppController.getInstance();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        sandwichList1 = controller.GetSandwichCatalog(this);
+        initialize();
+        initializeComboBox();
 
         addButton.addActionListener(new ActionListener() {
             @Override
@@ -260,4 +262,7 @@ public class OrderForm extends JFrame {
     public void fillErrorLabel(String message) {
         errorLabel.setText(message);
     }
+
+
+
 }
